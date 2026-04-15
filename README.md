@@ -86,7 +86,16 @@ GameIQ/
 
 ## 📸 Screenshots
 
-_Add your dashboard screenshots here (recommended for recruiters)_
+## 📸 Screenshots
+
+### 📊 Dashboard Overview
+![Dashboard](./frontend/screenshots/dashboard.png)
+
+### 🤖 Churn Prediction
+![Prediction](./frontend/screenshots/prediction.png)
+
+### 🧠 Key Insights
+![Insights](./frontend/screenshots/insights.png)
 
 ---
 
