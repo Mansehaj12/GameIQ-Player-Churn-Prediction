@@ -24,3 +24,7 @@ desktop.ini
 # Logs
 *.log
 npm-debug.log*
+
+# Local Documentation (Do not upload to GitHub)
+PROJECT_GUIDE.txt
+RESUME_CONTENT.md
