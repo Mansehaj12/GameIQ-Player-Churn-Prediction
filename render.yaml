@@ -1,0 +1,25 @@
+services:
+  # 1. Flask ML API (Python)
+  - type: web
+    name: gameiq-ml-api
+    env: python
+    rootDir: ml-model
+    buildCommand: "pip install -r requirements.txt && pip install gunicorn"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+
+  # 2. Node.js Backend & Frontend Dashboard
+  - type: web
+    name: gameiq-dashboard
+    env: node
+    rootDir: backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: FLASK_API_URL
+        fromService:
+          type: web
+          name: gameiq-ml-api
+          envVarKey: RENDER_EXTERNAL_URL

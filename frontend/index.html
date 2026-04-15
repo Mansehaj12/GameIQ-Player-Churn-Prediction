@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
+
 <body>
 
     <nav class="nav">
@@ -136,8 +138,8 @@
                     <div class="confidence-block">
                         <div class="confidence-ring" id="probRing">
                             <svg viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="42" class="ring-track"/>
-                                <circle cx="50" cy="50" r="42" class="ring-progress" id="ringFill"/>
+                                <circle cx="50" cy="50" r="42" class="ring-track" />
+                                <circle cx="50" cy="50" r="42" class="ring-progress" id="ringFill" />
                             </svg>
                             <div class="ring-center">
                                 <span class="ring-pct" id="ringValue">0%</span>
@@ -149,12 +151,16 @@
                     <div class="prob-meter">
                         <div class="prob-row">
                             <span>Retain</span>
-                            <div class="prob-track"><div class="prob-fill retain-fill" id="retainBar"></div></div>
+                            <div class="prob-track">
+                                <div class="prob-fill retain-fill" id="retainBar"></div>
+                            </div>
                             <span class="prob-num" id="retainProb">0%</span>
                         </div>
                         <div class="prob-row">
                             <span>Churn</span>
-                            <div class="prob-track"><div class="prob-fill churn-fill" id="churnBar"></div></div>
+                            <div class="prob-track">
+                                <div class="prob-fill churn-fill" id="churnBar"></div>
+                            </div>
                             <span class="prob-num" id="churnProb">0%</span>
                         </div>
                     </div>
@@ -175,7 +181,9 @@
                 <span class="insight-num">1</span>
                 <div>
                     <h4 class="insight-title">Most players leave early</h4>
-                    <p class="insight-body">81% of users churn within 7 days. While normal for free-to-play, this represents a large revenue opportunity. Retained players typically generate 10-50x more value.</p>
+                    <p class="insight-body">81% of users churn within 7 days. While normal for free-to-play, this
+                        represents a large revenue opportunity. Retained players typically generate 10-50x more value.
+                    </p>
                 </div>
                 <span class="insight-label label-red">Critical</span>
             </div>
@@ -183,7 +191,8 @@
                 <span class="insight-num">2</span>
                 <div>
                     <h4 class="insight-title">Gate at level 30 performs better</h4>
-                    <p class="insight-body">gate_30 shows 19.0% Day 7 retention vs 18.2% for gate_40. The earlier friction point may create better pacing. Recommendation: keep gate at level 30.</p>
+                    <p class="insight-body">gate_30 shows 19.0% Day 7 retention vs 18.2% for gate_40. The earlier
+                        friction point may create better pacing. Recommendation: keep gate at level 30.</p>
                 </div>
                 <span class="insight-label label-purple">A/B Result</span>
             </div>
@@ -191,7 +200,8 @@
                 <span class="insight-num">3</span>
                 <div>
                     <h4 class="insight-title">Engagement is the strongest predictor</h4>
-                    <p class="insight-body">Players with fewer than 10 rounds churn at 95%+. Those past 50 rounds retain at much higher rates. The model puts 86% feature importance on game rounds.</p>
+                    <p class="insight-body">Players with fewer than 10 rounds churn at 95%+. Those past 50 rounds retain
+                        at much higher rates. The model puts 86% feature importance on game rounds.</p>
                 </div>
                 <span class="insight-label label-blue">Insight</span>
             </div>
@@ -199,7 +209,8 @@
                 <span class="insight-num">4</span>
                 <div>
                     <h4 class="insight-title">Day 1 return is make-or-break</h4>
-                    <p class="insight-body">Players who do not come back on Day 1 almost never return by Day 7. The first session experience and a compelling reason to return within 24h is critical.</p>
+                    <p class="insight-body">Players who do not come back on Day 1 almost never return by Day 7. The
+                        first session experience and a compelling reason to return within 24h is critical.</p>
                 </div>
                 <span class="insight-label label-green">Actionable</span>
             </div>
@@ -207,7 +218,8 @@
                 <span class="insight-num">5</span>
                 <div>
                     <h4 class="insight-title">Improve the first 10 rounds</h4>
-                    <p class="insight-body">Add tutorials, rewards, and gentle difficulty in early levels. Push notifications with time-limited bonuses for players who haven't returned after 12 hours.</p>
+                    <p class="insight-body">Add tutorials, rewards, and gentle difficulty in early levels. Push
+                        notifications with time-limited bonuses for players who haven't returned after 12 hours.</p>
                 </div>
                 <span class="insight-label label-blue">Recommendation</span>
             </div>
@@ -219,6 +231,8 @@
         <p>GameIQ &mdash; Built by Mansehaj Preet Singh</p>
     </footer>
 
+
     <script src="script.js"></script>
 </body>
+
 </html>

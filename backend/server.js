@@ -24,8 +24,8 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
-const FLASK_API_URL = "http://127.0.0.1:5000";
+const PORT = process.env.PORT || 3000;
+const FLASK_API_URL = process.env.FLASK_API_URL || "http://127.0.0.1:5000";
 
 // ────────────────────────────────────────────────────────────
 // MIDDLEWARE
