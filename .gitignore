@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pkl
+!ml-model/model.pkl
 .env
 
 # Node.js
