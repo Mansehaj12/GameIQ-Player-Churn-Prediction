@@ -549,7 +549,7 @@ GameIQ/
     cookie_cats.csv ......... The raw dataset (90,189 players)
 
   ml-model/
-    anaysis.py .............. EDA script (loads data, creates charts)
+    analysis.py ............. EDA script (loads data, creates charts)
     model.py ................ ML training (RandomForest, saves model.pkl)
     app.py .................. Flask API server (port 5000, /predict)
     model.pkl ............... Saved trained model

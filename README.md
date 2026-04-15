@@ -1,5 +1,7 @@
 # GameIQ: AI-Powered Player Behavior Analytics Platform
 
+> 🚀 End-to-end ML + Full Stack Project for Player Churn Prediction
+
 A full-stack data analytics platform that analyzes player behavior in mobile games, predicts player churn using machine learning, and serves predictions through a REST API with a live dashboard.
 
 Built using the **Cookie Cats** A/B testing dataset (90,189 players).
@@ -20,6 +22,20 @@ Built using the **Cookie Cats** A/B testing dataset (90,189 players).
 
 ---
 
+## 💡 Why This Project Matters
+
+This project simulates how real gaming companies analyze player behavior and optimize retention.
+
+It demonstrates:
+- End-to-end ML pipeline development
+- Real-world A/B testing analysis
+- Production-style API architecture (Node + Flask)
+- Data-driven decision making
+
+This is not just a model — it's a **complete product system**.
+
+---
+
 ## Architecture
 
 ```
@@ -36,7 +52,7 @@ GameIQ/
 ├── data/
 │   └── cookie_cats.csv          # Dataset (90K players)
 ├── ml-model/
-│   ├── anaysis.py               # EDA + visualizations
+│   ├── analysis.py              # EDA + visualizations
 │   ├── model.py                 # ML training pipeline
 │   ├── app.py                   # Flask API server
 │   ├── model.pkl                # Trained model
@@ -68,6 +84,12 @@ GameIQ/
 
 ---
 
+## 📸 Screenshots
+
+_Add your dashboard screenshots here (recommended for recruiters)_
+
+---
+
 ## Setup & Run
 
 ### Prerequisites
@@ -76,7 +98,7 @@ GameIQ/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/yourusername/GameIQ.git
+git clone https://github.com/Mansehaj12/GameIQ-Player-Churn-Prediction.git
 cd GameIQ
 ```
 
@@ -91,7 +113,7 @@ pip install pandas numpy scikit-learn flask matplotlib seaborn
 
 ### 3. Run EDA and train the model
 ```bash
-python anaysis.py    # Generates charts + analysis
+python analysis.py   # Generates charts + analysis
 python model.py      # Trains model, saves model.pkl
 ```
 
@@ -196,4 +218,10 @@ MIT
 
 ## Author
 
-Built as a full-stack data science portfolio project demonstrating end-to-end ML pipeline development, API design, and product analytics.
+👨‍💻 **Mansehaj Preet Singh**
+
+Built as a full-stack data science project demonstrating:
+- Machine Learning (churn prediction)
+- Backend API development
+- Product analytics & A/B testing
+- End-to-end system design
