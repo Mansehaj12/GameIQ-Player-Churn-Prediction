@@ -72,12 +72,19 @@ async function predictChurn() {
     btn.classList.add("loading");
     btn.textContent = "Predicting...";
 
+    var wakeUpTimeout = setTimeout(function() {
+        if (btn.classList.contains("loading")) {
+            btn.textContent = "Waking up ML Model (~30s)...";
+        }
+    }, 5000);
+
     try {
         var res = await fetch(API_BASE + "/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ rounds: rounds, retention_1: retention_1, version: version })
         });
+        clearTimeout(wakeUpTimeout);
         var data = await res.json();
 
         if (data.success) {
@@ -86,6 +93,7 @@ async function predictChurn() {
             alert("Error: " + (data.error || "Unknown"));
         }
     } catch (err) {
+        clearTimeout(wakeUpTimeout);
         alert("Cannot connect to API. Are both servers running?");
     } finally {
         btn.classList.remove("loading");

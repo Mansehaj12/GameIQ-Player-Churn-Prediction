@@ -134,11 +134,32 @@ app.post("/api/predict", async (req, res) => {
         // ── Forward to Flask ML API ──
         const startTime = Date.now();
 
-        const flaskResponse = await axios.post(`${FLASK_API_URL}/predict`, {
-            rounds: parsedRounds,
-            retention_1: parsedRetention,
-            version: version,
-        });
+        let flaskResponse;
+        let attempts = 0;
+        const maxAttempts = 6;
+        
+        while (attempts < maxAttempts) {
+            try {
+                flaskResponse = await axios.post(`${FLASK_API_URL}/predict`, {
+                    rounds: parsedRounds,
+                    retention_1: parsedRetention,
+                    version: version,
+                });
+                break;
+            } catch (error) {
+                attempts++;
+                const status = error.response ? error.response.status : null;
+                // Treat 502, 503, and network errors as cold start symptoms
+                const isColdStartError = !status || status === 502 || status === 503 || status === 500;
+                
+                if (attempts < maxAttempts && isColdStartError) {
+                    console.log(`    -> ML API waking up (Attempt ${attempts}/${maxAttempts}). Retrying in 8s...`);
+                    await new Promise(resolve => setTimeout(resolve, 8000));
+                } else {
+                    throw error;
+                }
+            }
+        }
 
         const responseTime = Date.now() - startTime;
 
@@ -167,12 +188,20 @@ app.post("/api/predict", async (req, res) => {
                 hint: "Start the Flask server: cd ml-model && python app.py",
             });
         }
-
-        // Flask returned an error
         if (error.response) {
-            return res.status(error.response.status).json({
+            const status = error.response.status;
+            let errMsg = error.response.data.error;
+
+            if (!errMsg) {
+                if (status === 404) errMsg = "ML API endpoint not found (URL config error)";
+                else if (status === 500) errMsg = "ML API Internal Server Error (Python crash)";
+                else if (status === 502 || status === 503) errMsg = "ML API is offline or starting up";
+                else errMsg = `ML API returned status ${status}`;
+            }
+
+            return res.status(status).json({
                 success: false,
-                error: error.response.data.error || "ML API error",
+                error: errMsg,
             });
         }
 
