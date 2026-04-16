@@ -17,7 +17,7 @@ model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
-print(f"✅ Model loaded from: {model_path}")
+print(f"[*] Model loaded from: {model_path}")
 
 
 # ============================================================
@@ -133,11 +133,11 @@ def predict():
 
 if __name__ == '__main__':
     print("\n" + "=" * 50)
-    print("🚀 GameIQ ML API")
+    print("[*] GameIQ ML API")
     print("Running on: http://localhost:5000")
     print("Endpoints:")
-    print("  GET  /        → Health check")
-    print("  POST /predict → Churn prediction")
+    print("  GET  /        -> Health check")
+    print("  POST /predict -> Churn prediction")
     print("=" * 50 + "\n")
 
     app.run(debug=True, port=5000)
