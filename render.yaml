@@ -6,7 +6,7 @@ services:
     env: python
     rootDir: ml-model
     buildCommand: "pip install -r requirements.txt && pip install gunicorn"
-    startCommand: "gunicorn --timeout 120 app:app"
+    startCommand: "gunicorn -b 0.0.0.0:$PORT --timeout 120 app:app"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.0

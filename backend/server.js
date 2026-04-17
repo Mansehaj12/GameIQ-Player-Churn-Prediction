@@ -136,7 +136,7 @@ app.post("/api/predict", async (req, res) => {
 
         let flaskResponse;
         let attempts = 0;
-        const maxAttempts = 6;
+        const maxAttempts = 10; // Increase to 10 attempts
         
         while (attempts < maxAttempts) {
             try {
@@ -144,17 +144,17 @@ app.post("/api/predict", async (req, res) => {
                     rounds: parsedRounds,
                     retention_1: parsedRetention,
                     version: version,
-                });
+                }, { timeout: 30000 }); // 30s timeout per call
                 break;
             } catch (error) {
                 attempts++;
                 const status = error.response ? error.response.status : null;
-                // Treat 502, 503, and network errors as cold start symptoms
-                const isColdStartError = !status || status === 502 || status === 503 || status === 500;
+                // Treat 502, 503, 500 and network errors (ECONNRESET/ETIMEDOUT) as cold start symptoms
+                const isColdStartError = !status || status === 502 || status === 503 || status === 504 || status === 500;
                 
                 if (attempts < maxAttempts && isColdStartError) {
-                    console.log(`    -> ML API waking up (Attempt ${attempts}/${maxAttempts}). Retrying in 8s...`);
-                    await new Promise(resolve => setTimeout(resolve, 8000));
+                    console.log(`    -> ML API waking up (Attempt ${attempts}/${maxAttempts}). Retrying in 10s...`);
+                    await new Promise(resolve => setTimeout(resolve, 10000)); // 10s wait
                 } else {
                     throw error;
                 }

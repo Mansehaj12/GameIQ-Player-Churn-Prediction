@@ -74,7 +74,7 @@ async function predictChurn() {
 
     var wakeUpTimeout = setTimeout(function() {
         if (btn.classList.contains("loading")) {
-            btn.textContent = "Waking up ML Model (~30s)...";
+            btn.textContent = "Waking up ML Model (~60s)...";
         }
     }, 5000);
 

@@ -1,0 +1,367 @@
+================================================================================
+GAMEIQ: AI-POWERED PLAYER BEHAVIOR ANALYTICS PLATFORM
+COMPLETE PROJECT GUIDE — EVERYTHING YOU NEED TO KNOW
+================================================================================
+Author: Mansehaj Preet Singh
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+1. What is this project?
+2. Why did I build it?
+3. What technologies I used (and why)
+4. How I built it — step by step
+5. How the architecture works
+6. Dataset explanation
+7. Machine Learning — what I did and why
+8. API design — Flask and Node.js
+9. Frontend dashboard
+10. Key findings from the data
+11. Business recommendations
+12. Common interview questions and answers
+13. How to explain this project in 2 minutes
+
+
+================================================================================
+1. WHAT IS THIS PROJECT?
+================================================================================
+
+GameIQ is a full-stack analytics platform that analyzes player behavior in a
+mobile game called "Cookie Cats" and predicts whether a player will stop
+playing (churn) within 7 days.
+
+It has 4 main parts:
+- Data analysis (Python) — explore and understand the data
+- Machine learning model (scikit-learn) — predict churn
+- Backend APIs (Flask + Node.js) — serve predictions
+- Frontend dashboard (HTML/CSS/JS) — visualize everything
+
+Think of it like the analytics tools that gaming companies like Zynga,
+Supercell, or PlaySimple use internally to understand their players.
+
+
+================================================================================
+2. WHY DID I BUILD IT?
+================================================================================
+
+This project demonstrates real-world skills that companies look for:
+
+- Working with real data (not toy examples)
+- Building ML models that solve business problems
+- Creating APIs to serve predictions
+- Full-stack development (backend + frontend)
+- Thinking like a product analyst (not just a coder)
+
+The gaming industry is worth $200+ billion. Every major game company has a
+data science team that does exactly this — predict churn, improve retention,
+and maximize player lifetime value (LTV).
+
+
+================================================================================
+3. WHAT TECHNOLOGIES I USED (AND WHY)
+================================================================================
+
+PYTHON (Data + ML + Flask API)
+- pandas — for loading and manipulating the dataset
+- numpy — for numerical operations
+- matplotlib — for creating charts and visualizations
+- seaborn — for prettier statistical plots
+- scikit-learn — for building the machine learning model
+- pickle — for saving the trained model to disk
+- Flask — lightweight Python web framework for the ML API
+
+WHY PYTHON? It is the standard language for data science and ML. pandas and
+scikit-learn are industry-standard tools used at every data-driven company.
+
+NODE.JS + EXPRESS (Backend middleware)
+- express — web framework for building REST APIs
+- axios — for making HTTP requests to the Flask API
+- cors — for allowing cross-origin requests from the frontend
+
+WHY NODE.JS? It acts as a middleware between the frontend and Flask. This is
+a common pattern in production — you don't expose your ML API directly to
+the browser. Node.js handles validation, logging, and can add authentication
+later.
+
+FRONTEND (HTML + CSS + JavaScript)
+- Vanilla HTML/CSS/JS — no framework needed for a dashboard
+- Chart.js — JavaScript library for interactive charts
+- Inter font (Google Fonts) — clean, modern typography
+
+WHY NO REACT? For a dashboard like this, vanilla HTML/CSS/JS is simpler,
+faster, and easier to deploy. React would be overkill.
+
+
+================================================================================
+4. HOW I BUILT IT — STEP BY STEP
+================================================================================
+
+STEP 1: PROJECT SETUP
+---------------------
+I created 4 folders:
+- data/ — to store the dataset
+- ml-model/ — for Python scripts (EDA, model training, Flask API)
+- backend/ — for the Node.js Express server
+- frontend/ — for the dashboard UI
+
+For Python, I created a virtual environment:
+  cd ml-model
+  python -m venv venv
+  venv\Scripts\activate
+  pip install pandas numpy scikit-learn flask matplotlib seaborn
+
+For Node.js:
+  cd backend
+  npm init -y
+  npm install express axios cors
+
+Why virtual environment? It keeps project dependencies isolated. If another
+project uses a different version of pandas, they won't conflict.
+
+
+STEP 2: DATASET HANDLING
+-------------------------
+I used the Cookie Cats A/B testing dataset (cookie_cats.csv).
+
+What I did:
+1. Loaded the CSV with pandas: df = pd.read_csv('cookie_cats.csv')
+2. Checked the shape: 90,189 rows, 5 columns
+3. Checked for missing values: zero missing values (clean dataset)
+4. Understood each column (explained below in section 6)
+5. Created a new column called "churn":
+   churn = 1 if the player did NOT return after 7 days
+   churn = 0 if they DID return
+
+Why churn matters: If a gaming company can predict which players are about
+to leave, they can send those players targeted rewards, easier levels, or
+push notifications to bring them back. This directly increases revenue.
+
+
+STEP 3: EXPLORATORY DATA ANALYSIS (EDA)
+-----------------------------------------
+I analyzed the data to find patterns. This is what product analysts and
+data scientists do before building any model.
+
+What I found:
+- Day 1 Retention: 44.5% of players came back after 24 hours
+- Day 7 Retention: Only 18.6% were still playing after a week
+- Churn Rate: 81.4% of players left within 7 days
+- gate_30 had better retention than gate_40 (19.0% vs 18.2%)
+- Engaged players (50+ rounds) churned much less than casual ones
+
+I created 4 charts:
+1. Retention by A/B version (bar chart)
+2. Churn distribution (pie chart)
+3. Engagement vs churn (histogram)
+4. Churn rate by engagement buckets (bar chart)
+
+These charts are saved in frontend/charts/ and also displayed in the dashboard.
+
+
+STEP 4: MACHINE LEARNING MODEL
+--------------------------------
+Algorithm: RandomForestClassifier (from scikit-learn)
+
+Features I used (3 inputs):
+1. sum_gamerounds — how many rounds the player played (numeric)
+2. retention_1 — did they return on Day 1? (converted True/False to 1/0)
+3. version — gate_30 or gate_40 (converted to 0/1)
+
+Target: churn (1 = left, 0 = stayed)
+
+What I did:
+1. Converted categorical data to numbers
+2. Split data: 80% training, 20% testing (train_test_split)
+3. Trained a RandomForestClassifier with 100 trees
+4. Evaluated: 86.79% accuracy
+5. Saved model to model.pkl using pickle
+
+Why Random Forest?
+- It is an ensemble method — creates 100 decision trees and averages them
+- Works well with both numeric and categorical features
+- Does not need feature scaling (unlike SVM or neural networks)
+- Gives feature importance — tells you WHICH features matter most
+- Easy to explain to non-technical stakeholders
+
+Feature Importance Results:
+- sum_gamerounds: 86.2% — engagement is by far the strongest predictor
+- retention_1: 13.7% — Day 1 return is the second signal
+- version: 0.1% — A/B group barely matters for individual prediction
+
+Model Performance:
+- Accuracy: 86.79%
+- Precision (Churned class): 89%
+- Recall (Churned class): 95%
+- F1-Score (Churned class): 0.92
+
+The model correctly identifies 95% of players who will churn.
+
+
+STEP 5: FLASK ML API
+---------------------
+I created a Flask server (app.py) that:
+1. Loads model.pkl when the server starts
+2. Exposes a POST endpoint at /predict
+3. Accepts JSON: {"rounds": 50, "retention_1": 1, "version": "gate_30"}
+4. Runs the model prediction
+5. Returns: {"prediction": 1, "label": "CHURNED", "probability": 76.5}
+
+
+STEP 6: NODE.JS BACKEND
+-------------------------
+I created an Express server (server.js) that:
+1. Accepts requests from the frontend on port 3000
+2. Validates the input (checks types, ranges, required fields)
+3. Forwards the request to Flask API on port 5000
+4. Returns the prediction to the frontend
+
+Endpoints:
+- GET  /api/health — health check
+- POST /api/predict — predict churn for one player
+- POST /api/predict/batch — predict for multiple players at once
+- GET  /api/stats — check if Flask API is connected
+
+
+STEP 7: FRONTEND DASHBOARD
+----------------------------
+I built a clean analytics dashboard with:
+- 4 KPI metric cards (total players, retention rates, churn rate)
+- 3 interactive charts using Chart.js
+- A prediction form where you enter player data
+- Live results with a confidence ring and probability bars
+- Business insights section with key findings
+
+
+STEP 8: BUSINESS INSIGHTS
+---------------------------
+I wrote a full analysis report (BUSINESS_INSIGHTS.md) with:
+- Data summary and key metrics
+- A/B test conclusion (keep gate at 30)
+- Engagement analysis (50 rounds = activation point)
+
+
+STEP 9: README AND RESUME CONTENT
+-----------------------------------
+- README.md — professional GitHub README with setup instructions, API docs, architecture diagram, and tech stack
+- RESUME_CONTENT.md — resume bullet points, interview script, technical Q&A
+
+
+================================================================================
+5. HOW THE ARCHITECTURE WORKS
+================================================================================
+
+The data flows like this:
+
+  User (Browser)
+       | clicks "Run Prediction"
+       v
+  Node.js Backend
+       | validates input
+       | forwards request via axios
+       v
+  Flask ML API
+       | calls model.predict_proba()
+       | returns prediction
+       v
+  Node.js receives response
+       | wraps it with metadata
+       v
+  Frontend receives response
+       | updates the UI
+
+
+================================================================================
+6. DATASET EXPLANATION
+================================================================================
+
+Dataset: Cookie Cats A/B Testing Dataset
+Source: Kaggle
+Size: 90,189 rows, 5 columns
+
+The company ran an A/B test where they moved a "gate" from level 30 to level 40.
+The question: does moving the gate affect player retention?
+
+Columns:
+- userid: Unique ID for each player
+- version: A/B group — "gate_30" (control) or "gate_40" (test)
+- sum_gamerounds: Total rounds played in the first 14 days after install
+- retention_1: True/False — did the player open the game 1 day after install?
+- retention_7: True/False — did the player open the game 7 days after install?
+
+
+================================================================================
+7. MACHINE LEARNING — DETAILED EXPLANATION
+================================================================================
+
+Random Forest is an ensemble learning method. 
+1. It creates 100 decision trees (n_estimators=100)
+2. Each tree makes its own prediction
+3. The final prediction = majority vote of all 100 trees
+
+
+================================================================================
+8. KEY FINDINGS FROM THE DATA
+================================================================================
+
+1. 81.4% CHURN RATE
+2. GATE_30 WINS THE A/B TEST
+3. ENGAGEMENT IS THE #1 PREDICTOR
+4. DAY 1 RETURN IS CRITICAL
+
+
+================================================================================
+9. BUSINESS RECOMMENDATIONS
+================================================================================
+
+1. OPTIMIZE THE FIRST 10 ROUNDS
+2. SEND PUSH NOTIFICATIONS AT 12 HOURS
+3. IMPLEMENT DAILY LOGIN REWARDS
+4. KEEP THE GATE AT LEVEL 30
+5. USE THE ML MODEL FOR REAL-TIME SCORING
+
+
+================================================================================
+10. COMMON INTERVIEW QUESTIONS AND ANSWERS
+================================================================================
+
+Q: "Tell me about this project."
+A: "I built GameIQ, an end-to-end player analytics platform. I analyzed
+   90,000 players from a mobile game A/B test, trained a Random Forest
+   model that predicts churn with 87% accuracy, and built a full-stack
+   application to serve predictions through a Flask API, Node.js backend,
+   and a live dashboard."
+
+Q: "Why Random Forest?"
+A: "It handles mixed data types, provides feature importance, does not
+   need feature scaling, and gives strong performance without complex
+   tuning."
+
+
+================================================================================
+11. HOW TO EXPLAIN THIS PROJECT IN 2 MINUTES
+================================================================================
+
+"I built an end-to-end player analytics platform called GameIQ. The problem: 
+mobile games lose 80% of players within a week. I used the Cookie Cats dataset 
+— 90,000 players from a real A/B test. I trained a Random Forest model that 
+predicts churn with 87% accuracy. To serve predictions, I built a Flask API 
+in Python that loads the trained model, and a Node.js Express server acts as 
+middleware. The key business insight: get players past their first 50 rounds 
+and they are much more likely to stay."
+
+
+================================================================================
+12. QUICK REFERENCE — FILE MAP
+================================================================================
+
+  data/cookie_cats.csv
+  ml-model/analysis.py, model.py, app.py, model.pkl, requirements.txt
+  backend/server.js, package.json
+  frontend/index.html, style.css, script.js, charts/
+  render.yaml, BUSINESS_INSIGHTS.md
+
+
+================================================================================
+END OF DOCUMENT
+Built by Mansehaj Preet Singh
+================================================================================

@@ -14,10 +14,13 @@ app = Flask(__name__)
 # ── Load Model Once ──
 model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 
-with open(model_path, 'rb') as f:
-    model = pickle.load(f)
-
-print(f"[*] Model loaded from: {model_path}")
+try:
+    with open(model_path, 'rb') as f:
+        model = pickle.load(f)
+    print(f"[*] Model loaded successfully from: {model_path}")
+except Exception as e:
+    print(f"[!] CRITICAL ERROR: Could not load model.pkl: {str(e)}")
+    model = None
 
 
 # ============================================================
@@ -27,8 +30,9 @@ print(f"[*] Model loaded from: {model_path}")
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
-        "status": "online",
+        "status": "online" if model else "degraded",
         "message": "GameIQ ML API is running 🚀",
+        "model_loaded": model is not None,
         "endpoints": {
             "/predict": "POST - Predict player churn",
             "/": "GET - Health check"
@@ -42,6 +46,9 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if not model:
+        return jsonify({"error": "Model not loaded on server"}), 503
+    
     start_time = time.time()
 
     try:
@@ -132,12 +139,13 @@ def predict():
 # ============================================================
 
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
     print("\n" + "=" * 50)
     print("[*] GameIQ ML API")
-    print("Running on: http://localhost:5000")
+    print(f"Running on: http://0.0.0.0:{port}")
     print("Endpoints:")
     print("  GET  /        -> Health check")
     print("  POST /predict -> Churn prediction")
     print("=" * 50 + "\n")
 
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=port, debug=False)
